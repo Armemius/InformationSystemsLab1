@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:15
+    container_name: is_lab_1_db
+    restart: always
+    env_file:
+      - .env
+    ports:
+        - "5432:5432"
+
+  adminer:
+    image: adminer
+    container_name: is_lab_1_adminer
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+
+  frontend:
+    image: armemius/is-frontend-lab-1
+    container_name: is_lab_1_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+
+  backend:
+    image: armemius/is-backend-lab-1
+    container_name: is_lab_1_backend
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "3228:3228"
+    depends_on:
+      - db
+      
