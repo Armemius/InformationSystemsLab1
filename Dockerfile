@@ -14,4 +14,5 @@ ENV POSTGRES_PASSWORD=password
 
 COPY --from=build /home/gradle/project/build/libs/*.jar app.jar
 EXPOSE 3228
+EXPOSE 5432
 CMD ["java", "-jar", "/app.jar"]
