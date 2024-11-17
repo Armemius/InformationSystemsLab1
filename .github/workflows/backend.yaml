@@ -55,5 +55,8 @@ jobs:
           java-version: "17"
           distribution: "temurin"
 
+      - name: Set gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Run tests
         run: ./gradlew test
