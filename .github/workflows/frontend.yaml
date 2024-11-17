@@ -1,18 +1,8 @@
 name: Frontend Tasks
 
 on:
-  push: {
-    branches: [
-      main,
-      frontend
-    ]
-  }
-  pull_request: {
-    branches: [
-      main,
-      frontend
-    ]
-  }
+  push: { branches: [main, frontend] }
+  pull_request: { branches: [main, frontend] }
 
 jobs:
   lint-markdown:
