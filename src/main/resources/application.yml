@@ -2,7 +2,7 @@ spring:
   application:
     name: lab_1_backend
   datasource:
-      url: ${POSTGRES_URL}
+      url: jdbc:postgresql://db:5432/lab_1_is
       username: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
       driver-class-name: org.postgresql.Driver
