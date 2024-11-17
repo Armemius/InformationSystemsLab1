@@ -1,8 +1,8 @@
 name: Backend Tasks
 
 on:
-  push: {}
-  pull_request: {}
+  push: { branches: [ main, backend ] }
+  pull_request: { branches: [ main, backend ]}
 
 jobs:
   lint-markdown:
@@ -45,6 +45,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    needs: [ lint-markdown, lint-kotlin ]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -60,3 +62,23 @@ jobs:
 
       - name: Run tests
         run: ./gradlew test
+
+  build:
+    needs: test
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: armemius
+          password: ${{ secrets.ARMEMIUS_DOCKERHUB_RW }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: armemius/is-backend-lab-1:latest
