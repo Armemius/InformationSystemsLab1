@@ -19,56 +19,42 @@ import jakarta.validation.constraints.Size
 import java.time.ZonedDateTime
 
 @Entity
-class LabWork {
+class LabWork(
     @Id
     @NotNull(message = "ID should not be null")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Positive(message = "ID must be greater than 0")
-    private val id: Long? = null
-
+    private val id: Long? = null,
     @ManyToOne
-    @NotNull(message = "Author cannot be null")
-    private val owner: User? = null
-
-    @Column(nullable = false)
+    @NotNull(message = "Owner cannot be null")
+    val owner: User,
     @NotNull(message = "Name cannot be null")
     @NotBlank(message = "Name cannot be empty")
-    private val name: String? = null
-
+    val name: String,
     @Embedded
     @NotNull(message = "Coordinates cannot be null")
-    private val coordinates: Coordinates? = null
-
-    @Column(nullable = false, updatable = false)
+    val coordinates: Coordinates,
+    @Column(updatable = false)
     @NotNull(message = "Creation date cannot be null")
-    private var creationDate: ZonedDateTime? = null
-
-    @Column(nullable = false, length = 9046)
+    var creationDate: ZonedDateTime,
+    @Column(length = 9046)
     @NotNull(message = "Description cannot be null")
     @Size(max = 9046, message = "Description must not be longer than 9046 characters")
-    private val description: String? = null
-
+    val description: String,
     @Enumerated(EnumType.STRING)
-    private val difficulty: Difficulty? = null
-
-    @ManyToOne(optional = false, cascade = [CascadeType.ALL])
-    @NotNull(message = "Discipline cannot be null")
-    private val discipline: Discipline? = null
-
-    @Column(nullable = false)
+    @NotNull(message = "Description cannot be null")
+    val difficulty: Difficulty,
+    @ManyToOne(optional = true, cascade = [CascadeType.ALL])
+    val discipline: Discipline?,
     @NotNull(message = "Minimal point cannot be null")
     @Positive(message = "Minimal point must be greater than 0")
-    private val minimalPoint: Int? = null
-
-    @Column(nullable = false)
+    val minimalPoint: Int,
     @NotNull(message = "Personal qualities minimum cannot be null")
     @Positive(message = "Personal qualities minimum must be greater than 0")
-    private val personalQualitiesMinimum: Int? = null
-
-    @ManyToOne(optional = false, cascade = [CascadeType.ALL])
-    @NotNull(message = "Author cannot be null")
-    private val author: Person? = null
-
+    val personalQualitiesMinimum: Int,
+    @ManyToOne(optional = true, cascade = [CascadeType.ALL])
+    val author: Person?,
+) {
     @PrePersist
     fun prePersist() {
         this.creationDate = ZonedDateTime.now()

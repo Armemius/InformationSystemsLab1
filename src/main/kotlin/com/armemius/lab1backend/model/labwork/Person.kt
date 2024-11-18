@@ -1,6 +1,5 @@
 package com.armemius.lab1backend.model.labwork
 
-import jakarta.persistence.Column
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -11,36 +10,26 @@ import jakarta.persistence.Id
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
+import java.time.ZonedDateTime
 
 @Entity
-class Person {
+data class Person(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long? = null
-
-    @Column(nullable = false)
+    private val id: Long? = null,
     @NotNull(message = "Name cannot be null")
     @NotBlank(message = "Name cannot be empty")
-    private val name: String? = null
-
+    val name: String?,
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     @NotNull(message = "Eye color cannot be null")
-    private val eyeColor: Color? = null
-
+    val eyeColor: Color,
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     @NotNull(message = "Hair color cannot be null")
-    private val hairColor: Color? = null
-
+    val hairColor: Color,
     @Embedded
-    private val location: Location? = null
-
-    @Column(nullable = false)
+    val location: Location?,
+    val birthday: ZonedDateTime?,
     @NotNull(message = "Weight cannot be null")
     @Positive(message = "Weight must be greater than 0")
-    private val weight: Float? = null
-
-    @Enumerated(EnumType.STRING)
-    private val nationality: Country? = null
-}
+    val weight: Float,
+)

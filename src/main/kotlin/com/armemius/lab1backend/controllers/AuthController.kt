@@ -13,8 +13,10 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -32,13 +34,13 @@ class AuthController(
     @CrossOrigin(value = ["*"])
     @Throws(ValidationException::class)
     fun login(
-        @RequestBody userDTO: @Valid UserDTO?,
+        @RequestBody userDTO: @Valid UserDTO,
     ): ResponseEntity<*> {
         val authentication =
             authManager.authenticate(
                 UsernamePasswordAuthenticationToken(
-                    userDTO?.login,
-                    userDTO?.password,
+                    userDTO.login,
+                    userDTO.password,
                 ),
             )
         authentication ?: throw ValidationException("Unable to authenticate user")
@@ -74,11 +76,12 @@ class AuthController(
         return ResponseEntity.ok<Any>(AuthResponseDTO(token))
     }
 
-//    @GetMapping("/username")
-//    fun getUsernameFromToken(
-//        @RequestHeader("Authorization") authorizationHeader: String?
-//    ): ResponseEntity<*> {
-//        authorizationHeader ?: throw AuthenticationError("Authorization header is missing")
-//        return ResponseEntity.ok(authService.getUsernameFromHeader(authorizationHeader))
-//    }
+    @GetMapping("/username")
+    fun getUsernameFromToken(
+        @RequestHeader("Authorization") authorizationHeader: String?,
+    ): ResponseEntity<*> {
+        authorizationHeader ?: throw ValidationException("Authorization header is missing")
+        val login = authService.getUsernameFromHeader(authorizationHeader)
+        return ResponseEntity.ok(userRepository.findFirstByLogin(login)?.username)
+    }
 }

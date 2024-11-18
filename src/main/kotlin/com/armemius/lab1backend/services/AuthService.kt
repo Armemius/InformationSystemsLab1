@@ -17,6 +17,7 @@ class AuthService(
     private val jwtProvider: JwtProvider,
 ) {
     fun register(userDTO: UserDTO) {
+        userDTO.username ?: throw ValidationException("Invalid request body")
         if (userDTO.login.length < 5 ||
             16 < userDTO.login.length ||
             userDTO.username.length < 5 ||
@@ -26,7 +27,12 @@ class AuthService(
         ) {
             throw ValidationException("Invalid request body")
         }
-        val user = User(userDTO.login, userDTO.username, passwordEncoder.encode(userDTO.password))
+        val user =
+            User(
+                login = userDTO.login,
+                username = userDTO.username,
+                password = passwordEncoder.encode(userDTO.password),
+            )
         userRepository.save(user)
     }
 

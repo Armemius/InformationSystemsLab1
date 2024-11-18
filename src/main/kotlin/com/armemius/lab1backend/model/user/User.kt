@@ -15,32 +15,23 @@ import org.hibernate.validator.constraints.Length
 @Entity
 @Table(name = "Users")
 class User(
-    login: String,
-    username: String,
-    password: String,
-    role: Roles = Roles.USER,
-) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long? = null
-
+    private val id: Long? = null,
     @Column(nullable = false)
     @NotNull(message = "Login cannot be null")
     @Length(min = 5, max = 16, message = "Login should be between 5 and 16 characters")
-    val login: String? = login
-
+    val login: String,
     @Column(nullable = false)
     @NotNull(message = "Username cannot be null")
     @Length(min = 5, max = 16, message = "Username should be between 5 and 16 characters")
-    val username: String? = username
-
+    val username: String,
     @Column(nullable = false)
     @NotNull(message = "Password cannot be null")
     @NotBlank(message = "Password cannot be empty")
-    val password: String? = password
-
+    val password: String,
     @Column(nullable = false)
     @NotNull(message = "Password cannot be null")
     @Enumerated(EnumType.STRING)
-    val role: Roles? = role
-}
+    val role: Roles = Roles.USER,
+)
