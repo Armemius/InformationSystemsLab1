@@ -45,6 +45,16 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ vars.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+        ports:
+          - 5432:5432
+
     needs: [ lint-markdown, lint-kotlin ]
 
     steps:
@@ -59,11 +69,11 @@ jobs:
 
       - name: Set env
         run: |
-          echo "HOST=$(echo ${{ vars.HOST }})" >> $GITHUB_ENV
-          echo "JWT_SECRET_KEY=$(echo ${{ vars.JWT_SECRET_KEY }})" >> $GITHUB_ENV
-          echo "POSTGRES_DB=$(echo ${{ vars.POSTGRES_DB }})" >> $GITHUB_ENV
-          echo "POSTGRES_USER=$(echo ${{ vars.POSTGRES_USER }})" >> $GITHUB_ENV
-          echo "POSTGRES_PASSWORD=$(echo ${{ vars.POSTGRES_PASSWORD }})" >> $GITHUB_ENV
+          echo "HOST=${{ vars.HOST }}" >> $GITHUB_ENV
+          echo "JWT_SECRET_KEY=${{ vars.JWT_SECRET_KEY }}" >> $GITHUB_ENV
+          echo "POSTGRES_DB=${{ vars.POSTGRES_DB }}" >> $GITHUB_ENV
+          echo "POSTGRES_USER=${{ vars.POSTGRES_USER }}" >> $GITHUB_ENV
+          echo "POSTGRES_PASSWORD=${{ vars.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Test env
         run: echo $GITHUB_ENV
