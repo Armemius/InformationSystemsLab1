@@ -59,11 +59,11 @@ jobs:
 
       - name: Set env
         run: |
-          echo "HOST=$(echo ${{ env.HOST }})" >> $GITHUB_ENV
-          echo "JWT_SECRET_KEY=$(echo ${{ env.JWT_SECRET_KEY }})" >> $GITHUB_ENV
-          echo "POSTGRES_DB=$(echo ${{ env.POSTGRES_DB }})" >> $GITHUB_ENV
-          echo "POSTGRES_USER=$(echo ${{ env.POSTGRES_USER }})" >> $GITHUB_ENV
-          echo "POSTGRES_PASSWORD=$(echo ${{ env.POSTGRES_PASSWORD }})" >> $GITHUB_ENV
+          echo "HOST=$(echo ${{ vars.HOST }})" >> $GITHUB_ENV
+          echo "JWT_SECRET_KEY=$(echo ${{ vars.JWT_SECRET_KEY }})" >> $GITHUB_ENV
+          echo "POSTGRES_DB=$(echo ${{ vars.POSTGRES_DB }})" >> $GITHUB_ENV
+          echo "POSTGRES_USER=$(echo ${{ vars.POSTGRES_USER }})" >> $GITHUB_ENV
+          echo "POSTGRES_PASSWORD=$(echo ${{ vars.POSTGRES_PASSWORD }})" >> $GITHUB_ENV
 
       - name: Test env
         run: echo $GITHUB_ENV
