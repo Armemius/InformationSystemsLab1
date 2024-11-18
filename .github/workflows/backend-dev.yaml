@@ -2,7 +2,7 @@ name: Backend-dev Tasks
 
 on:
   push: { branches: [ main, backend-dev ] }
-  pull_request: { branches: [ main, backend-dev ]}
+  pull_request: { branches: [ main, backend-dev ] }
 
 jobs:
   lint-markdown:
@@ -59,6 +59,13 @@ jobs:
 
       - name: Set gradlew executable
         run: chmod +x ./gradlew
+
+      - name: Print test environment variables
+        run: echo HOST=$HOST \
+          echo JWT_SECRET_KEY=$JWT_SECRET_KEY \
+          echo POSTGRES_DB=$POSTGRES_DB \
+          echo POSTGRES_USER=$POSTGRES_USER\
+          echo POSTGRES_PASSWORD=$POSTGRES_PASSWORD
 
       - name: Run tests
         run: ./gradlew test
