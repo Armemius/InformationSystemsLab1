@@ -57,15 +57,19 @@ jobs:
           java-version: "17"
           distribution: "temurin"
 
+      - name: Set env
+        run: |
+          echo "HOST=$(echo $HOST)" >> $GITHUB_ENV
+          echo "JWT_SECRET_KEY=$(echo $JWT_SECRET_KEY)" >> $GITHUB_ENV
+          echo "POSTGRES_DB=$(echo $POSTGRES_DB)" >> $GITHUB_ENV
+          echo "POSTGRES_USER=$(echo $POSTGRES_USER)" >> $GITHUB_ENV
+          echo "POSTGRES_PASSWORD=$(echo $POSTGRES_PASSWORD)" >> $GITHUB_ENV
+
+      - name: Test env
+        run: echo $GITHUB_ENV
+
       - name: Set gradlew executable
         run: chmod +x ./gradlew
-
-      - name: Print test environment variables
-        run: echo HOST=$HOST \
-          echo JWT_SECRET_KEY=$JWT_SECRET_KEY \
-          echo POSTGRES_DB=$POSTGRES_DB \
-          echo POSTGRES_USER=$POSTGRES_USER\
-          echo POSTGRES_PASSWORD=$POSTGRES_PASSWORD
 
       - name: Run tests
         run: ./gradlew test
