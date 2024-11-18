@@ -7,10 +7,12 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
 
 @Entity
+@Table(name = "AppUsers")
 class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +21,7 @@ class User {
     @Column(nullable = false)
     @NotNull(message = "Name cannot be null")
     @Length(min = 5, max = 16, message = "Name should be between 5 and 16 characters")
-    private val name: String? = null
+    private val login: String? = null
 
     @Column(nullable = false)
     @NotNull(message = "Password cannot be null")

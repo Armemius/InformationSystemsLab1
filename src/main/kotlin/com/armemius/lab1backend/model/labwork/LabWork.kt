@@ -1,5 +1,6 @@
 package com.armemius.lab1backend.model.labwork
 
+import com.armemius.lab1backend.model.user.User
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
@@ -20,9 +21,14 @@ import java.time.ZonedDateTime
 @Entity
 class LabWork {
     @Id
+    @NotNull(message = "ID should not be null")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Positive(message = "ID must be greater than 0")
-    private val id = 0
+    private val id: Long? = null
+
+    @ManyToOne
+    @NotNull(message = "Author cannot be null")
+    private val owner: User? = null
 
     @Column(nullable = false)
     @NotNull(message = "Name cannot be null")
