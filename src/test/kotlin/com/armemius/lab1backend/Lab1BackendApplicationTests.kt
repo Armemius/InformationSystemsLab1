@@ -1,4 +1,4 @@
-package com.armemius.lab_1_backend
+package com.armemius.lab1backend
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

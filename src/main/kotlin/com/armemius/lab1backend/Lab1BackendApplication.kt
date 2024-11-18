@@ -1,4 +1,4 @@
-package com.armemius.lab_1_backend
+package com.armemius.lab1backend
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
