@@ -1,5 +1,6 @@
 package com.armemius.lab1backend.model.labwork
 
+import com.armemius.lab1backend.model.LabWorkUpdates
 import com.armemius.lab1backend.model.user.User
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
@@ -11,6 +12,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 import jakarta.persistence.PrePersist
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
@@ -54,6 +56,8 @@ class LabWork(
     val personalQualitiesMinimum: Int,
     @ManyToOne(optional = true, cascade = [CascadeType.ALL])
     val author: Person?,
+    @OneToMany(mappedBy = "labWork", cascade = [CascadeType.REMOVE], orphanRemoval = true)
+    private val labWorkUpdates: MutableList<LabWorkUpdates> = mutableListOf(),
 ) {
     @PrePersist
     fun prePersist() {

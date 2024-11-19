@@ -4,7 +4,6 @@ import com.armemius.lab1backend.constants.SecurityConstants
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import java.util.Date
@@ -25,7 +24,7 @@ class JwtProvider {
             .compact()
     }
 
-    fun getUsernameFromJwt(token: String?): String {
+    fun getLoginFromJwt(token: String?): String {
         val claims: Claims =
             Jwts
                 .parser()
@@ -43,7 +42,7 @@ class JwtProvider {
                 .parseClaimsJws(token)
             return true
         } catch (e: Exception) {
-            throw AuthenticationCredentialsNotFoundException("JWT is incorrect")
+            return false
         }
     }
 }

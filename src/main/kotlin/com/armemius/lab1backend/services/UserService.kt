@@ -15,18 +15,15 @@ class UserService(
     private val userRepository: UserRepository,
 ) : UserDetailsService {
     @Throws(UsernameNotFoundException::class)
-    override fun loadUserByUsername(username: String): UserDetails {
-        val user = userRepository.findFirstByLogin(username) ?: throw UsernameNotFoundException("User not found")
-        return User(user.login, user.password, setAuthorities())
+    override fun loadUserByUsername(login: String): UserDetails {
+        val user = userRepository.findFirstByLogin(login) ?: throw UsernameNotFoundException("User not found")
+        return User(user.login, user.password, setAuthorities(user.role))
     }
 
     companion object {
-        private val ROLE = Roles.USER.toString()
-
-        private fun setAuthorities(): List<GrantedAuthority> {
+        private fun setAuthorities(role: Roles): List<GrantedAuthority> {
             val authorities: MutableList<GrantedAuthority> = ArrayList()
-
-            authorities.add(SimpleGrantedAuthority(ROLE))
+            authorities.add(SimpleGrantedAuthority(role.name))
             return authorities
         }
     }

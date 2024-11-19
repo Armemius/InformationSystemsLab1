@@ -7,6 +7,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.PrePersist
 import jakarta.validation.constraints.NotNull
@@ -23,10 +24,12 @@ class LabWorkUpdates {
     private var updateTime: ZonedDateTime? = null
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     @NotNull(message = "Editor cannot be null")
     private val editor: User? = null
 
     @ManyToOne
+    @JoinColumn(name = "lab_work_id")
     @NotNull(message = "LabWork cannot be null")
     private val labWork: LabWork? = null
 

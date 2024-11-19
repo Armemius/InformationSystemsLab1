@@ -1,5 +1,7 @@
 package com.armemius.lab1backend.model.user
 
+import com.armemius.lab1backend.model.LabWorkUpdates
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -7,6 +9,7 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
@@ -37,4 +40,6 @@ class User(
     @Column(nullable = false)
     @NotNull(message = "Password cannot be null")
     val active: Boolean = true,
+    @OneToMany(mappedBy = "editor", cascade = [CascadeType.REMOVE], orphanRemoval = true)
+    private val labWorkUpdates: MutableList<LabWorkUpdates> = mutableListOf(),
 )

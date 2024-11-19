@@ -12,4 +12,9 @@ interface UserRepository : JpaRepository<User?, Long?> {
     fun existsByRole(role: Roles?): Boolean
 
     fun findFirstByLogin(login: String): User?
+
+    fun findFirstByLoginAndPassword(
+        login: String,
+        password: String,
+    ): User?
 }

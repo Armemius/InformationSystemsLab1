@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
@@ -17,22 +18,25 @@ class JwtAuthFilter(
     private val jwtProvider: JwtProvider,
     private val userService: UserService,
 ) : OncePerRequestFilter() {
+    override fun shouldNotFilter(request: HttpServletRequest): Boolean = request.servletPath.startsWith("/api/auth")
+
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        if (request.servletPath.startsWith("/api/auth")) {
-            filterChain.doFilter(request, response)
+        val token = getJwtFromRequest(request)
+        if (!jwtProvider.validateToken(token)) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token")
             return
         }
+        if (StringUtils.hasText(token)) {
+            val username = jwtProvider.getLoginFromJwt(token)
 
-        val token = getJwtFromRequest(request)
-        if (StringUtils.hasText(token) && jwtProvider.validateToken(token)) {
-            val username = jwtProvider.getUsernameFromJwt(token)
+            val authenticationToken: Authentication
             val userDetails: UserDetails = userService.loadUserByUsername(username)
-            val authenticationToken =
+            authenticationToken =
                 UsernamePasswordAuthenticationToken(
                     userDetails,
                     null,
