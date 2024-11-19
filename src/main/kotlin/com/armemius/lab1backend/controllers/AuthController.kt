@@ -2,6 +2,7 @@ package com.armemius.lab1backend.controllers
 
 import com.armemius.lab1backend.dto.AuthResponseDTO
 import com.armemius.lab1backend.dto.UserDTO
+import com.armemius.lab1backend.exceptions.RegistrationError
 import com.armemius.lab1backend.repositories.UserRepository
 import com.armemius.lab1backend.security.jwt.JwtProvider
 import com.armemius.lab1backend.services.AuthService
@@ -57,9 +58,9 @@ class AuthController(
     fun register(
         @RequestBody userDTO: @Valid UserDTO?,
     ): ResponseEntity<*> {
-        userDTO ?: throw ValidationException("Invalid request body")
-        if (userRepository.existsByLogin(userDTO.login)) {
-            throw ValidationException("Username taken")
+        userDTO ?: throw RegistrationError("Invalid request body")
+        if (userRepository.existsByLogin(userDTO.login) || userRepository.existsByUsername(userDTO.username)) {
+            throw RegistrationError("Username taken")
         }
         authService.register(userDTO)
         val authentication =
@@ -70,7 +71,7 @@ class AuthController(
                         userDTO.password,
                     ),
                 )
-        authentication ?: throw ValidationException("Unable to authenticate user")
+        authentication ?: throw RegistrationError("Unable to authenticate user")
         SecurityContextHolder.getContext().authentication = authentication
         val token: String = jwtProvider.generateToken(authentication)
         return ResponseEntity.ok<Any>(AuthResponseDTO(token))

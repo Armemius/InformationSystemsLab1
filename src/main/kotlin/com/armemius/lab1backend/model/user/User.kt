@@ -34,4 +34,7 @@ class User(
     @NotNull(message = "Password cannot be null")
     @Enumerated(EnumType.STRING)
     val role: Roles = Roles.USER,
+    @Column(nullable = false)
+    @NotNull(message = "Password cannot be null")
+    val active: Boolean = true,
 )

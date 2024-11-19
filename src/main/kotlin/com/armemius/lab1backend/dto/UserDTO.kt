@@ -4,4 +4,5 @@ data class UserDTO(
     val login: String,
     val username: String?,
     val password: String,
+    val role: String?,
 )
